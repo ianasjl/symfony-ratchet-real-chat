@@ -1,0 +1,45 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: ianas
+ * Date: 09.05.2018
+ * Time: 21:59
+ */
+
+namespace AppBundle\Entity;
+
+
+use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="fos_user")
+ */
+class RegUser extends BaseUser
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    public function __construct()
+    {
+        parent::__construct();
+        // your own logic
+    }
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $first_name;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $last_name;
+
+
+}

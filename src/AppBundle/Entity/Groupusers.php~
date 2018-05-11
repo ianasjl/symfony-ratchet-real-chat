@@ -1,0 +1,111 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: ianas
+ * Date: 07.05.2018
+ * Time: 17:27
+ */
+
+namespace AppBundle\Entity;
+
+
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMSSerializer;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="groupusers")
+ * @UniqueEntity("email")
+ * @UniqueEntity("username")
+ * @JMSSerializer\ExclusionPolicy("all")
+ */
+class Groupusers
+{
+
+    /**
+     * @ORM\Column(type="guid")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @JMSSerializer\Expose
+     * @JMSSerializer\Type("string")
+     */
+    protected $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Users", mappedBy="username")
+     *
+     * @JMSSerializer\Expose
+     * @JMSSerializer\Type("ArrayCollection<AppBundle\Entity\Groupusers>")
+     * @JMSSerializer\MaxDepth(2)
+     * @JMSSerializer\Groups({"users_all"})
+     */
+    protected $userIdArray;
+
+    /**
+     * @var string The groupname of the chat
+     * @JMSSerializer\Expose
+     * @JMSSerializer\Type("string")
+     * @JMSSerializer\Groups({"group_all"})
+     * @ORM\Column(type="string", nullable=true, length=60, unique=true)
+     */
+    private $groupname;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->userIdArray = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id.
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Add userIdArray.
+     *
+     * @param \AppBundle\Entity\Users $userIdArray
+     *
+     * @return Groupusers
+     */
+    public function addUserIdArray(\AppBundle\Entity\Users $userIdArray)
+    {
+        $this->userIdArray[] = $userIdArray;
+
+        return $this;
+    }
+
+    /**
+     * Remove userIdArray.
+     *
+     * @param \AppBundle\Entity\Users $userIdArray
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeUserIdArray(\AppBundle\Entity\Users $userIdArray)
+    {
+        return $this->userIdArray->removeElement($userIdArray);
+    }
+
+    /**
+     * Get userIdArray.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUserIdArray()
+    {
+        return $this->userIdArray;
+    }
+
+}

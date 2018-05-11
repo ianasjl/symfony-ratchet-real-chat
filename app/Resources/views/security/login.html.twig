@@ -1,0 +1,27 @@
+{% if error %}
+    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+
+{% stylesheets
+    'css/style.css'
+    filter='cssrewrite' output='css/style.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}
+    <div id="login">
+        <form action="{{ path('login') }}" method="post">
+            <fieldset class="clearfix">
+                <h1>OWLChat</h1><br>
+                <p>
+                    <span class="fontawesome-user"></span>
+                    <input type="text" value="Логин" id="username" name="_username" value="{{ last_username }}" onBlur="if(this.value === '') this.value = 'Логин'" onFocus="if(this.value === 'Логин') this.value = ''" required>
+                </p>
+                <p>
+                    <span class="fontawesome-lock"></span>
+                    <input type="password" value="Пароль" id="password" name="_password" onBlur="if(this.value === '') this.value = 'Пароль'" onFocus="if(this.value === 'Пароль') this.value = ''" required></p> <!-- JS because of IE support; better: placeholder="Password" -->
+                <p>
+                    <input type="submit" value="ВОЙТИ">
+                </p>
+            </fieldset>
+        </form>
+    </div>
+

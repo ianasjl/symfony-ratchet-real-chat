@@ -1,0 +1,73 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: ianas
+ * Date: 08.05.2018
+ * Time: 19:39
+ */
+
+namespace AppBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMSSerializer;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="messages")
+ * @UniqueEntity("messagename")
+ * @JMSSerializer\ExclusionPolicy("all")
+ */
+class Messages
+{
+
+    /**
+     * @ORM\Column(type="guid")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @JMSSerializer\Expose
+     * @JMSSerializer\Type("string")
+     * @JMSSerializer\Groups({"messages_all"})
+     */
+    private $id;
+
+    /**
+     * @var string The messagename of the chat
+     * @ORM\Column(type="string")
+     * @JMSSerializer\Expose
+     * @ManyToOne(targetEntity="Groupmessages", inversedBy="messagesArray")
+     * @JMSSerializer\Type("string")
+     * @JMSSerializer\Groups({"messages_all"})
+     * @ORM\Column(type="string", length=25, unique=true)
+     */
+    private $messagename;
+
+    /**
+     * @var string The fromUserId of the chat
+     * @ORM\Column(type="integer")
+     * @JMSSerializer\Expose
+     * @JMSSerializer\Type("string")
+     * @JMSSerializer\Groups({"messages_all"})
+     * @ORM\Column(type="string", nullable=true, length=60, unique=true)
+     */
+    private $fromUserId;
+
+    /**
+     * @Assert\DateTime()
+     */
+    private $posted_at;
+
+    /**
+     * @var string The fromSocketId of the chat
+     * @ORM\Column(type="integer")
+     * @JMSSerializer\Expose
+     * @JMSSerializer\Type("string")
+     * @JMSSerializer\Groups({"messages_all"})
+     * @ORM\Column(type="string", nullable=true, length=60, unique=true)
+     */
+    private $fromSocketId;
+
+}
